@@ -1,55 +1,45 @@
 package com.alex.phonebook.main;
 
-import com.alex.phonebook.PhonebookEntry;
+import com.alex.phonebook.Phonebook;
+import com.alex.phonebook.Entities.PhonebookEntry;
+
+import java.util.Scanner;
 
 public class Main {
-    private static final int MAX_CONTACTS = 100;
-    private static int s_currentContactsNumber = 0;
-    private static PhonebookEntry[] s_contacts = new PhonebookEntry[MAX_CONTACTS];
 
     public static void main(String[] args) {
-	    Main.parseArguments(args);
-	    Main.printContacts();
+	    runApp();
     }
 
-    public static void parseArguments(String[] args) {
-        boolean isValid = true;
-        for(int i = 0; i < args.length; ++i) {
-            if(!isValid) {
-                return;
-            }
-            switch (args[i]) {
-                case "-add":
-                    if (args.length < i + 3) { // app has to have at least 2 more arguments after '-add"
-                        System.out.println("For '-add' command, name and phone number has to be provided");
-                        isValid = false;
-                        break;
-                    }
+    public static void runApp() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Phonebook owner's name:");
 
-                    String name = args[i+1];
-                    String phoneNumber = args[i+2];
-                    i += 2;
+        Phonebook phonebook = Phonebook.getInstance();
+        phonebook.setOwner(scanner.nextLine());
 
-                    PhonebookEntry phonebookEntry = new PhonebookEntry(name, phoneNumber);
-                    s_contacts[s_currentContactsNumber] = phonebookEntry;
-                    ++s_currentContactsNumber;
-
+        System.out.println("What do you want to achieve?(type 'help' for instructions)");
+        String command = scanner.nextLine();
+        while(!command.equals("exit")) {
+            switch (command) {
+                case "add":
+                    PhonebookEntry contact = new PhonebookEntry();
+                    System.out.println("Please provide details. The ones marked with '*' are mandatory.");
+                    contact.serialiseData(scanner);
+                    phonebook.addContact(contact);
                     break;
-                case "-help":
+                case "print":
+                    Phonebook.printContacts();
+                    break;
+                case "find":
+                    break;
+                case "help":
+                default:
                     System.out.println(helpText);
                     break;
-                default:
-                    isValid = false;
-                    System.out.println(Main.helpText);
             }
-        }
-    }
 
-    public static void printContacts() {
-        for(PhonebookEntry contact : s_contacts) {
-            if(contact != null) {
-                System.out.println(contact.toString());
-            }
+            command = scanner.nextLine();
         }
     }
 
@@ -57,7 +47,8 @@ public class Main {
             Usage of the app:
             java ${pathToMain}/Main -arg1 -arg2 ..
             Arguments possible values:
-            "-help": provide this info
-            "-add": add a new contact; it has to be followed by a name and a phone number
+            "help": provide this info
+            "add": add a new contact; it has to be followed by a name and a phone number
+            "print": print all saved contacts
             """;
 }
