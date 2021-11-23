@@ -77,8 +77,6 @@ public class PhonebookEntry implements CompositeEntityInfo {
         phoneNumber.serialiseData(scanner);
         personalEmail.serialiseData(scanner);
         workingEmail.serialiseData(scanner);
-
-        System.out.println("Contact " + name + " saved.");
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.alex.phonebook.Entities;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 public class PhoneNumber implements CompositeEntityInfo {
@@ -36,5 +37,18 @@ public class PhoneNumber implements CompositeEntityInfo {
         return "PhoneNumber{" +
                 "phone='" + phone + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PhoneNumber that = (PhoneNumber) o;
+        return phone.equals(that.phone);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(phone);
     }
 }
