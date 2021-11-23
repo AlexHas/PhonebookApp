@@ -32,7 +32,6 @@ public class Main {
                     Phonebook.printContacts();
                     break;
                 case "find":
-
                     break;
                 case "help":
                 default:
